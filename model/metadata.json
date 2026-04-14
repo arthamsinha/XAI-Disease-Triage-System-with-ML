@@ -1,0 +1,265 @@
+{
+    "metrics": {
+        "accuracy": 1.0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "confusion_matrix_top6": {
+            "classes": [
+                "Fungal infection",
+                "Allergy",
+                "GERD",
+                "Chronic cholestasis",
+                "Drug Reaction",
+                "Peptic ulcer diseae"
+            ],
+            "matrix": [
+                [
+                    24,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                ],
+                [
+                    0,
+                    24,
+                    0,
+                    0,
+                    0,
+                    0
+                ],
+                [
+                    0,
+                    0,
+                    24,
+                    0,
+                    0,
+                    0
+                ],
+                [
+                    0,
+                    0,
+                    0,
+                    24,
+                    0,
+                    0
+                ],
+                [
+                    0,
+                    0,
+                    0,
+                    0,
+                    24,
+                    0
+                ],
+                [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    24
+                ]
+            ]
+        },
+        "shap_top8": [
+            {
+                "feature": "family_history",
+                "importance": 0.0892513245344162
+            },
+            {
+                "feature": "coma",
+                "importance": 0.08092546463012695
+            },
+            {
+                "feature": "pain_behind_the_eyes",
+                "importance": 0.07842204719781876
+            },
+            {
+                "feature": "blood_in_sputum",
+                "importance": 0.07833286374807358
+            },
+            {
+                "feature": "throat_irritation",
+                "importance": 0.07739537209272385
+            },
+            {
+                "feature": "receiving_blood_transfusion",
+                "importance": 0.07733075320720673
+            },
+            {
+                "feature": "muscle_pain",
+                "importance": 0.07582288235425949
+            },
+            {
+                "feature": "rusty_sputum",
+                "importance": 0.07578212022781372
+            }
+        ]
+    },
+    "knowledge": {
+        "Common Cold": {
+            "description": "Common Cold is a viral infection of the upper respiratory tract.",
+            "recommendations": [
+                "Drink vitamin C rich drinks and take steam inhalation"
+            ],
+            "precautions": [
+                "Avoid cold foods and keep a regular check on your temperature"
+            ],
+            "symptoms": [
+                "sneezing",
+                "runny nose",
+                "sore throat",
+                "cough"
+            ]
+        },
+        "Pneumonia": {
+            "description": "Pneumonia is an inflammatory condition affecting the air sacs in the lungs caused by infection.",
+            "recommendations": [
+                "Seek immediate medical assessment at a hospital",
+                "Antibiotics and oxygen may be required"
+            ],
+            "precautions": [
+                "Rest completely and follow up with a doctor immediately",
+                "Do not attempt home care"
+            ],
+            "symptoms": [
+                "shortness of breath",
+                "high fever",
+                "chest pain",
+                "rapid breathing",
+                "low oxygen"
+            ]
+        },
+        "Gastroenteritis": {
+            "description": "Gastroenteritis is an inflammation of the stomach and intestines.",
+            "recommendations": [
+                "Drink plenty of fluids like ORS (Oral Rehydration Solution) or clear broth"
+            ],
+            "precautions": [
+                "Follow a bland diet of Bananas Rice Applesauce and Toast",
+                "Avoid solid food initially"
+            ],
+            "symptoms": [
+                "nausea",
+                "vomiting",
+                "diarrhoea",
+                "abdominal pain"
+            ]
+        },
+        "Dengue": {
+            "description": "Dengue is a mosquito-borne viral infection causing severe flu-like symptoms.",
+            "recommendations": [
+                "Drink papaya leaf juice and stay very well hydrated",
+                "Use only Paracetamol"
+            ],
+            "precautions": [
+                "Keep mosquitoes away with nets or repellents",
+                "Avoid fatty or spicy foods"
+            ],
+            "symptoms": [
+                "high fever",
+                "joint pain",
+                "skin rash",
+                "headache",
+                "body ache"
+            ]
+        },
+        "Influenza (Flu)": {
+            "description": "Influenza is a common viral infection that can be deadly especially in high-risk groups.",
+            "recommendations": [
+                "Get strict bed rest and drink plenty of fluids",
+                "Use Paracetamol for fever"
+            ],
+            "precautions": [
+                "Isolate from others to prevent spread and monitor your breathing"
+            ],
+            "symptoms": [
+                "high fever",
+                "cough",
+                "body ache",
+                "fatigue",
+                "headache"
+            ]
+        },
+        "Allergy": {
+            "description": "Allergy is an immune system reaction to a substance in the environment.",
+            "recommendations": [
+                "Avoid the trigger and use mild antihistamines if prescribed"
+            ],
+            "precautions": [
+                "Apply calamine lotion to rashes and cover sensitive areas"
+            ],
+            "symptoms": [
+                "sneezing",
+                "runny nose",
+                "itchy eyes",
+                "skin rash"
+            ]
+        },
+        "Migraine": {
+            "description": "Migraine is a severe headache often accompanied by nausea and sensitivity to light.",
+            "recommendations": [
+                "Take prescribed pain relievers and rest in a dark quiet room"
+            ],
+            "precautions": [
+                "Practice meditation and reduce stress",
+                "Use polarized glasses in the sun"
+            ],
+            "symptoms": [
+                "headache",
+                "nausea",
+                "dizziness",
+                "fatigue"
+            ]
+        },
+        "Bronchial Asthma": {
+            "description": "Bronchial Asthma is a respiratory condition characterized by inflammation of the airways.",
+            "recommendations": [
+                "Use your prescribed inhaler and take deep calm breaths"
+            ],
+            "precautions": [
+                "Get away from triggers and switch to loose clothing to breathe easier"
+            ],
+            "symptoms": [
+                "shortness of breath",
+                "cough",
+                "rapid breathing"
+            ]
+        },
+        "Typhoid": {
+            "description": "Typhoid is a bacterial infection that can lead to high fever and stomach issues.",
+            "recommendations": [
+                "Requires antibiotic therapy prescribed by a doctor"
+            ],
+            "precautions": [
+                "Eat high-calorie vegetables and stay hydrated",
+                "Consult a doctor immediately"
+            ],
+            "symptoms": [
+                "high fever",
+                "headache",
+                "vomiting",
+                "abdominal pain"
+            ]
+        },
+        "Malaria": {
+            "description": "Malaria is a mosquito-borne infectious disease.",
+            "recommendations": [
+                "Requires prescribed antimalarial drugs and fever reducers"
+            ],
+            "precautions": [
+                "Consult the nearest hospital and avoid oily or non-vegetarian foods"
+            ],
+            "symptoms": [
+                "high fever",
+                "sweating",
+                "body ache",
+                "headache"
+            ]
+        }
+    },
+    "last_updated": "2026-04-14 19:28:44"
+}

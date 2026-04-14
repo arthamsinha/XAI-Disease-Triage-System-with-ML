@@ -15,14 +15,13 @@ import shap
 BASE_URL = "https://raw.githubusercontent.com/sohamvsonar/Disease-Prediction-and-Medical-Recommendation-System/main/dataset/"
 FILES = {
     "Training.csv": "Training.csv",
-    "Symptom-severity.csv": "Symptom-severity.csv",
-    "description.csv": "description.csv",
-    "precautions_df.csv": "precautions_df.csv",
-    "medications.csv": "medications.csv"
+    "Symptom-severity.csv": "Symptom-severity.csv"
 }
-
 DATA_DIR = "data"
 MODEL_DIR = "model"
+
+# New Local Knowledge Source
+KNOWLEDGE_CSV = os.path.join(DATA_DIR, "master_clinical_knowledge.csv")
 
 def download_data():
     if not os.path.exists(DATA_DIR):
@@ -130,7 +129,32 @@ def train():
     with open(os.path.join(MODEL_DIR, "feature_columns.json"), "w") as f:
         json.dump(feature_columns, f, indent=4)
         
-    # Summary Table
+    # Consolidate Knowledge for Dashboard [Step 2]
+    print("Consolidating clinical knowledge...")
+    knowledge = {}
+    if os.path.exists(KNOWLEDGE_CSV):
+        kname_df = pd.read_csv(KNOWLEDGE_CSV)
+        for _, row in kname_df.iterrows():
+            dname = row['Disease']
+            knowledge[dname] = {
+                "description": row['Description'],
+                "recommendations": [r.strip() for r in str(row['Medication_Layman']).split('.')],
+                "precautions": [p.strip() for p in str(row['Precautions_Layman']).split('.')],
+                "symptoms": [s.strip() for s in str(row['Pattern_Symptoms']).split(',')]
+            }
+            # Clean up empty strings from split
+            knowledge[dname]["recommendations"] = [r for r in knowledge[dname]["recommendations"] if r]
+            knowledge[dname]["precautions"] = [p for p in knowledge[dname]["precautions"] if p]
+
+    # Final Metadata Package
+    deployment_package = {
+        "metrics": metrics,
+        "knowledge": knowledge,
+        "last_updated": pd.Timestamp.now().strftime("%Y-%m-%d %H:%M:%S")
+    }
+    
+    with open(os.path.join(MODEL_DIR, "metadata.json"), "w") as f:
+        json.dump(deployment_package, f, indent=4)
     print("\n" + "="*30)
     print(" TRAINING SUMMARY")
     print("="*30)
