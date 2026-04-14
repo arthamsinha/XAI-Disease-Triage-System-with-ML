@@ -3,70 +3,119 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Literature — XAI Healthcare DSS</title>
+    <title>Literature Comparison — XAI Healthcare DSS</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 </head>
 <body>
     <div class="app-wrapper">
-        <div class="sidebar collapsed" id="sidebar">
-            <div class="sidebar-header"><div class="sidebar-logo">XAI Healthcare DSS</div></div>
+        <!-- Sidebar -->
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">XAI Healthcare DSS</div>
+            </div>
             <nav class="sidebar-nav">
-                <a href="dashboard.html" class="nav-item"><span>Chat & Triage</span></a>
-                <a href="performance.html" class="nav-item"><span>Performance</span></a>
-                <a href="comparison.html" class="nav-item active"><span>Comparison</span></a>
+                <a href="dashboard.html" class="nav-item">
+                    <span>Chat & Triage</span>
+                </a>
+                <a href="performance.html" class="nav-item">
+                    <span>Performance</span>
+                </a>
+                <a href="comparison.html" class="nav-item active">
+                    <span>Comparison</span>
+                </a>
             </nav>
-            <div class="sidebar-footer">v1.1.0 — Responsive Prototype</div>
+            <div class="sidebar-footer">
+                v1.0.0 — Seminar Prototype
+            </div>
         </div>
 
+        <!-- Main Content -->
         <div class="main-content">
             <header class="top-bar">
                 <div class="menu-toggle" id="sidebar-toggle">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line>
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
                     </svg>
                 </div>
-                <div class="font-semibold" style="font-size: 15px;">Comparative Benchmarking</div>
+                <div class="font-semibold" style="font-size: 16px;">Literature & Academic Benchmarking</div>
+                <div style="flex: 1"></div>
+                <div class="text-muted small">Comparative Analysis Unit</div>
             </header>
 
             <div class="content-body fade-in">
                 <div class="card" style="padding: 0; overflow: hidden;">
-                    <div style="padding: 24px 24px 0 24px;"><h3 class="card-title">System Comparison Matrix</h3></div>
-                    <div style="overflow-x: auto;">
-                        <table style="width: 100%; min-width: 600px; border-collapse: collapse;">
+                    <h3 class="card-title" style="padding: 24px 24px 0 24px; border: none;">Systems Benchmarking Matrix</h3>
+                    <table style="width: 100%; border-collapse: collapse;">
+                        <thead style="background: var(--bg-tertiary);">
+                            <tr>
+                                <th style="padding: 16px 24px; text-align: left; font-size: 12px; color: var(--text-muted);">SYSTEM / PAPER</th>
+                                <th style="padding: 16px; text-align: left; font-size: 12px; color: var(--text-muted);">MODEL</th>
+                                <th style="padding: 16px; text-align: left; font-size: 12px; color: var(--text-muted);">ACCURACY</th>
+                                <th style="padding: 16px; text-align: left; font-size: 12px; color: var(--text-muted);">EXPLAINABILITY</th>
+                                <th style="padding: 16px; text-align: left; font-size: 12px; color: var(--text-muted);">TRIAGE</th>
+                                <th style="padding: 16px; text-align: left; font-size: 12px; color: var(--text-muted);">MED REC</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="border-bottom: 1px solid var(--border);">
+                                <td style="padding: 16px 24px;">Levine et al. (GPT-3)</td>
+                                <td style="padding: 16px;">GPT-3</td>
+                                <td style="padding: 16px;">~70%</td>
+                                <td style="padding: 16px;"><span class="badge badge-no">None</span></td>
+                                <td style="padding: 16px;"><span class="badge badge-warn">Partial</span></td>
+                                <td style="padding: 16px;"><span class="badge badge-no">No</span></td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid var(--border);">
+                                <td style="padding: 16px 24px;">Okada et al. (emergency)</td>
+                                <td style="padding: 16px;">DNN</td>
+                                <td style="padding: 16px;">~85%</td>
+                                <td style="padding: 16px;"><span class="badge badge-warn">Post-hoc</span></td>
+                                <td style="padding: 16px;"><span class="badge badge-yes">Yes</span></td>
+                                <td style="padding: 16px;"><span class="badge badge-no">No</span></td>
+                            </tr>
+                            <tr class="row-highlight">
+                                <td style="padding: 16px 24px; font-weight: 600;">Proposed XAI-DSS (Seminar)</td>
+                                <td style="padding: 16px; font-weight: 600;">XGBoost</td>
+                                <td style="padding: 16px; font-weight: 600;">94.2%</td>
+                                <td style="padding: 16px;"><span class="badge badge-yes">SHAP + Rules</span></td>
+                                <td style="padding: 16px;"><span class="badge badge-yes">3-zone</span></td>
+                                <td style="padding: 16px;"><span class="badge badge-yes">Home Care</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="grid-cols-2">
+                    <div class="card">
+                        <h3 class="card-title">Model Capability Profile</h3>
+                        <div style="height: 350px;">
+                            <canvas id="radar-chart"></canvas>
+                        </div>
+                    </div>
+                    <div class="card" style="padding: 0; overflow: hidden;">
+                        <h3 class="card-title" style="padding: 24px 24px 0 24px; border: none;">Explainability Matrix</h3>
+                        <table style="width: 100%; border-collapse: collapse;">
                             <thead style="background: var(--bg-tertiary);">
-                                <tr style="font-size: 11px; color: var(--text-muted); text-align: left;">
-                                    <th style="padding: 16px 24px;">SYSTEM / PAPER</th>
-                                    <th style="padding: 16px;">MODEL</th>
-                                    <th style="padding: 16px;">ACCURACY</th>
-                                    <th style="padding: 16px;">XAI</th>
-                                    <th style="padding: 16px;">TRIAGE</th>
+                                <tr>
+                                    <th style="padding: 16px 24px; text-align: left; font-size: 11px;">TECHNIQUE</th>
+                                    <th style="padding: 16px; text-align: left; font-size: 11px;">FIDELITY</th>
+                                    <th style="padding: 16px; text-align: left; font-size: 11px;">FRIENDLY</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr style="border-bottom: 1px solid var(--border);"><td style="padding: 16px 24px;">Levine et al. (GPT-3)</td><td>DL</td><td>~70%</td><td>None</td><td>Partial</td></tr>
-                                <tr style="background: var(--accent-blue-soft); font-weight: 600;"><td style="padding: 16px 24px;">Proposed XAI-DSS</td><td>XGBoost</td><td>94.2%</td><td>SHAP</td><td>3-Zone</td></tr>
+                                <tr style="border-bottom: 1px solid var(--border);"><td style="padding: 14px 24px;">LIME</td><td>Medium</td><td>Moderate</td></tr>
+                                <tr style="border-bottom: 1px solid var(--border);"><td style="padding: 14px 24px;">SHAP (Tree)</td><td>High</td><td style="color: var(--zone-green);">High</td></tr>
+                                <tr style="border-bottom: 1px solid var(--border);"><td style="padding: 14px 24px;">Counterfactual</td><td>Medium</td><td style="color: var(--zone-green);">High</td></tr>
+                                <tr style="background: var(--accent-blue-soft);"><td style="padding: 14px 24px; font-weight: 600;">Used: SHAP+Rules</td><td>High</td><td style="color: var(--zone-green); font-weight: 600;">High</td></tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
 
-                <div class="grid-cols-2">
-                    <div class="card">
-                        <h3 class="card-title">Capability Profile</h3>
-                        <div style="height: 300px;"><canvas id="radar-chart"></canvas></div>
-                    </div>
-                    <div class="card">
-                        <h3 class="card-title">XAI Protocol Assessment</h3>
-                        <p class="text-muted small mb-6">Fidelity vs Human-Interpretability</p>
-                        <div style="padding: 16px; background: var(--bg-tertiary); border-radius: 8px;">
-                            <p style="font-weight: 500;">SHAP-based Feature Attribution</p>
-                            <p class="text-secondary small">High fidelity, Medium interpretability. Supplemented with rule-matching for clinical clarity.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <footer style="margin-top: 32px; text-align: center; font-size: 11px; color: var(--text-muted);">
+                <footer style="margin-top: 40px; text-align: center; font-size: 11px; color: var(--text-muted);">
                     Educational prototype only — not a substitute for professional medical advice.
                 </footer>
             </div>
@@ -74,21 +123,40 @@
     </div>
 
     <script>
+        Chart.defaults.font.family = "'IBM Plex Sans', sans-serif";
         new Chart(document.getElementById('radar-chart'), {
             type: 'radar',
             data: {
-                labels: ['Accuracy', 'XAI', 'Latency', 'Triage', 'Trust'],
-                datasets: [{ label: 'Proposed', data: [94, 90, 85, 92, 88], borderColor: '#2563eb', backgroundColor: 'rgba(37, 99, 235, 0.1)' }]
+                labels: ['Accuracy', 'Explainability', 'Speed', 'Triage accuracy', 'Trust', 'Coverage'],
+                datasets: [
+                    { label: 'XGBoost (Proposed)', data: [94, 90, 85, 92, 88, 80], borderColor: '#2563eb', backgroundColor: 'rgba(37, 99, 235, 0.1)', pointBackgroundColor: '#2563eb' },
+                    { label: 'GPT-3 (Academic)', data: [70, 20, 60, 65, 40, 50], borderColor: '#92400e', backgroundColor: 'rgba(146, 64, 14, 0.1)', pointBackgroundColor: '#92400e' }
+                ]
             },
-            options: { responsive: true, maintainAspectRatio: false, scales: { r: { suggestedMin: 0, ticks: { display: false } } } }
+            options: { responsive: true, maintainAspectRatio: false, scales: { r: { suggestedMin: 0, suggestedMax: 100, ticks: { backdropColor: 'transparent' } } } }
         });
 
+        // Sidebar Toggle
         const sidebar = document.getElementById('sidebar');
         const toggle = document.getElementById('sidebar-toggle');
+        
         toggle.onclick = () => {
-            if (window.innerWidth <= 1100) sidebar.classList.toggle('active');
-            else sidebar.classList.toggle('collapsed');
+            if (window.innerWidth <= 1024) {
+                sidebar.classList.toggle('active');
+            } else {
+                sidebar.classList.toggle('collapsed');
+            }
         };
+
+        // Close sidebar on mobile when clicking outside
+        document.addEventListener('click', (e) => {
+            if (window.innerWidth <= 1024 && 
+                !sidebar.contains(e.target) && 
+                !toggle.contains(e.target) && 
+                sidebar.classList.contains('active')) {
+                sidebar.classList.remove('active');
+            }
+        });
     </script>
 </body>
 </html>

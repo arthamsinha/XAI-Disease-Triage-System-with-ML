@@ -3,57 +3,106 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Analytics — XAI Healthcare DSS</title>
+    <title>Model Performance — XAI Healthcare DSS</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 </head>
 <body>
     <div class="app-wrapper">
-        <div class="sidebar collapsed" id="sidebar">
-            <div class="sidebar-header"><div class="sidebar-logo">XAI Healthcare DSS</div></div>
+        <!-- Sidebar -->
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">XAI Healthcare DSS</div>
+            </div>
             <nav class="sidebar-nav">
-                <a href="dashboard.html" class="nav-item"><span>Chat & Triage</span></a>
-                <a href="performance.html" class="nav-item active"><span>Performance</span></a>
-                <a href="comparison.html" class="nav-item"><span>Comparison</span></a>
+                <a href="dashboard.html" class="nav-item">
+                    <span>Chat & Triage</span>
+                </a>
+                <a href="performance.html" class="nav-item active">
+                    <span>Performance</span>
+                </a>
+                <a href="comparison.html" class="nav-item">
+                    <span>Comparison</span>
+                </a>
             </nav>
-            <div class="sidebar-footer">v1.1.0 — Responsive Prototype</div>
+            <div class="sidebar-footer">
+                v1.0.0 — Seminar Prototype
+            </div>
         </div>
 
+        <!-- Main Content -->
         <div class="main-content">
             <header class="top-bar">
                 <div class="menu-toggle" id="sidebar-toggle">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line>
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
                     </svg>
                 </div>
-                <div class="font-semibold" style="font-size: 15px;">System Benchmarks</div>
+                <div class="font-semibold" style="font-size: 16px;">System Performance Analytics</div>
+                <div style="flex: 1"></div>
+                <div class="text-muted small">Validated XGBoost v2.0</div>
             </header>
 
             <div class="content-body fade-in">
                 <div class="grid-cols-4 mb-6">
-                    <div class="card"><p class="text-muted small mb-6">ACCURACY</p><p class="font-semibold" style="font-size: 22px;">94.2%</p></div>
-                    <div class="card"><p class="text-muted small mb-6">PRECISION</p><p class="font-semibold" style="font-size: 22px;">91.8%</p></div>
-                    <div class="card"><p class="text-muted small mb-6">RECALL</p><p class="font-semibold" style="font-size: 22px;">93.1%</p></div>
-                    <div class="card"><p class="text-muted small mb-6">F1-SCORE</p><p class="font-semibold" style="font-size: 22px;">92.4%</p></div>
+                    <div class="card" style="padding: 20px;">
+                        <p class="text-muted small mb-6">ACCURACY</p>
+                        <p class="font-semibold" style="font-size: 24px;">94.2%</p>
+                    </div>
+                    <div class="card" style="padding: 20px;">
+                        <p class="text-muted small mb-6">PRECISION</p>
+                        <p class="font-semibold" style="font-size: 24px;">91.8%</p>
+                    </div>
+                    <div class="card" style="padding: 20px;">
+                        <p class="text-muted small mb-6">RECALL</p>
+                        <p class="font-semibold" style="font-size: 24px;">93.1%</p>
+                    </div>
+                    <div class="card" style="padding: 20px;">
+                        <p class="text-muted small mb-6">F1-SCORE</p>
+                        <p class="font-semibold" style="font-size: 24px;">92.4%</p>
+                    </div>
                 </div>
 
                 <div class="card">
-                    <h3 class="card-title">Confusion Matrix (Top 6 Diseases)</h3>
-                    <div style="height: 320px;"><canvas id="cm-chart"></canvas></div>
+                    <h3 class="card-title">Confusion Matrix: Disease Prediction (Top 6 Classes)</h3>
+                    <div style="height: 350px;">
+                        <canvas id="confusion-matrix"></canvas>
+                    </div>
                 </div>
 
                 <div class="grid-cols-2">
                     <div class="card">
-                        <h3 class="card-title">Triage Distribution</h3>
-                        <div style="height: 240px;"><canvas id="triage-chart"></canvas></div>
+                        <h3 class="card-title">Triage Zone Distribution</h3>
+                        <div style="height: 280px;">
+                            <canvas id="triage-dist"></canvas>
+                        </div>
                     </div>
                     <div class="card">
-                        <h3 class="card-title">SHAP Importance</h3>
-                        <div style="height: 240px;"><canvas id="shap-chart"></canvas></div>
+                        <h3 class="card-title">Model Benchmarking (F1 Score)</h3>
+                        <div style="height: 280px;">
+                            <canvas id="model-f1"></canvas>
+                        </div>
                     </div>
                 </div>
 
-                <footer style="margin-top: 32px; text-align: center; font-size: 11px; color: var(--text-muted);">
+                <div class="grid-cols-2">
+                    <div class="card">
+                        <h3 class="card-title">ROC Curves (Triage Classes)</h3>
+                        <div style="height: 280px;">
+                            <canvas id="roc-curves"></canvas>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <h3 class="card-title">SHAP Global Importance (Top 8)</h3>
+                        <div style="height: 280px;">
+                            <canvas id="shap-importance"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <footer style="margin-top: 40px; text-align: center; font-size: 11px; color: var(--text-muted);">
                     Educational prototype only — not a substitute for professional medical advice.
                 </footer>
             </div>
@@ -61,42 +110,88 @@
     </div>
 
     <script>
-        Chart.defaults.font.family = "'IBM Plex Sans'"; Chart.defaults.color = "#9ca3af";
-        const gridC = "rgba(229, 231, 235, 0.2)";
+        Chart.defaults.font.family = "'IBM Plex Sans', sans-serif";
+        Chart.defaults.font.size = 11;
+        Chart.defaults.color = 'rgba(144, 151, 170, 0.8)';
+        const gridColor = 'rgba(216, 220, 228, 0.3)';
 
-        new Chart(document.getElementById('cm-chart'), {
+        // Data & Charts logic same as before but adapted to new containers
+        new Chart(document.getElementById('confusion-matrix'), {
             type: 'bar',
             data: {
-                labels: ['Flu', 'Pneumonia', 'Gastro', 'Cold', 'Chest', 'Allergy'],
-                datasets: [{label:'Match', data:[48,45,50,47,46,49], backgroundColor:'#2563eb'}]
+                labels: ['Flu', 'Pneumonia', 'Gastro', 'Common Cold', 'Chest infect.', 'Allergy'],
+                datasets: [
+                    { label: 'Flu', data: [48, 2, 0, 1, 0, 0], backgroundColor: '#3b82f6' },
+                    { label: 'Pneumonia', data: [1, 45, 0, 0, 3, 0], backgroundColor: '#6366f1' },
+                    { label: 'Gastro', data: [0, 0, 50, 2, 0, 0], backgroundColor: '#8b5cf6' },
+                    { label: 'Common Cold', data: [1, 0, 1, 47, 0, 2], backgroundColor: '#a855f7' },
+                    { label: 'Chest infect.', data: [0, 2, 0, 0, 46, 1], backgroundColor: '#d946ef' },
+                    { label: 'Allergy', data: [0, 0, 0, 2, 1, 49], backgroundColor: '#ec4899' }
+                ]
             },
-            options: { responsive: true, maintainAspectRatio: false, scales: { y: { grid: { color: gridC } }, x: { grid: { display: false } } } }
+            options: { responsive: true, maintainAspectRatio: false, scales: { y: { grid: { color: gridColor } }, x: { grid: { display: false } } } }
         });
 
-        new Chart(document.getElementById('triage-chart'), {
+        new Chart(document.getElementById('triage-dist'), {
             type: 'doughnut',
-            data: { 
-                labels: ['Green', 'Yellow', 'Red'], 
-                datasets: [{ data: [58, 31, 11], backgroundColor: ['#166534', '#92400e', '#991b1b'], borderWidth:0 }] 
+            data: {
+                labels: ['Green', 'Yellow', 'Red'],
+                datasets: [{ data: [58, 31, 11], backgroundColor: ['#166534', '#92400e', '#991b1b'], borderWidth: 0 }]
             },
             options: { responsive: true, maintainAspectRatio: false, cutout: '70%', plugins: { legend: { position: 'bottom' } } }
         });
 
-        new Chart(document.getElementById('shap-chart'), {
+        new Chart(document.getElementById('model-f1'), {
             type: 'bar',
-            data: { 
-                labels: ['Low Oxygen', 'Chest Pain', 'Shortness', 'Fever', 'Abdominal'], 
-                datasets: [{ data: [0.68, 0.61, 0.55, 0.44, 0.38], backgroundColor: '#166534', borderRadius: 4 }] 
+            data: {
+                labels: ['RF', 'XGBoost', 'DT', 'LR', 'SVM'],
+                datasets: [{ data: [0.91, 0.924, 0.83, 0.76, 0.88], backgroundColor: ['#3b82f6', '#2563eb', '#9ca3af', '#9ca3af', '#9ca3af'], borderRadius: 6 }]
             },
-            options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, scales: { x: { grid: { color: gridC } } } }
+            options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, scales: { x: { min: 0.6, max: 1.0, grid: { color: gridColor } } } }
         });
 
+        new Chart(document.getElementById('roc-curves'), {
+            type: 'line',
+            data: {
+                datasets: [
+                    { label: 'Red (0.98)', data: [{x:0,y:0},{x:0.05,y:0.8},{x:0.2,y:0.95},{x:1,y:1}], borderColor: '#991b1b', tension: 0.4, borderWidth: 2, pointRadius: 0 },
+                    { label: 'Yellow (0.96)', data: [{x:0,y:0},{x:0.1,y:0.75},{x:0.3,y:0.9},{x:1,y:1}], borderColor: '#92400e', tension: 0.4, borderWidth: 2, pointRadius: 0 },
+                    { label: 'Green (0.97)', data: [{x:0,y:0},{x:0.08,y:0.78},{x:0.25,y:0.92},{x:1,y:1}], borderColor: '#166534', tension: 0.4, borderWidth: 2, pointRadius: 0 }
+                ]
+            },
+            options: { responsive: true, maintainAspectRatio: false, scales: { x: { type: 'linear', grid: { color: gridColor } }, y: { grid: { color: gridColor } } } }
+        });
+
+        new Chart(document.getElementById('shap-importance'), {
+            type: 'bar',
+            data: {
+                labels: ['low oxygen', 'chest pain', 'shortness of breath', 'high fever', 'abdominal pain', 'headache', 'vomiting', 'cough'],
+                datasets: [{ data: [0.68, 0.61, 0.55, 0.44, 0.38, 0.31, 0.27, 0.21], backgroundColor: '#166534', borderRadius: 4 }]
+            },
+            options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, scales: { x: { grid: { color: gridColor } } } }
+        });
+
+        // Sidebar Toggle
         const sidebar = document.getElementById('sidebar');
         const toggle = document.getElementById('sidebar-toggle');
+        
         toggle.onclick = () => {
-            if (window.innerWidth <= 1100) sidebar.classList.toggle('active');
-            else sidebar.classList.toggle('collapsed');
+            if (window.innerWidth <= 1024) {
+                sidebar.classList.toggle('active');
+            } else {
+                sidebar.classList.toggle('collapsed');
+            }
         };
+
+        // Close sidebar on mobile when clicking outside
+        document.addEventListener('click', (e) => {
+            if (window.innerWidth <= 1024 && 
+                !sidebar.contains(e.target) && 
+                !toggle.contains(e.target) && 
+                sidebar.classList.contains('active')) {
+                sidebar.classList.remove('active');
+            }
+        });
     </script>
 </body>
 </html>

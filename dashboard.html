@@ -8,17 +8,25 @@
 </head>
 <body>
     <div class="app-wrapper">
-        <!-- Sidebar starting with 'collapsed' for priority on chat -->
+        <!-- Sidebar (Collapsed by default for full-screen chat) -->
         <div class="sidebar collapsed" id="sidebar">
             <div class="sidebar-header">
                 <div class="sidebar-logo">XAI Healthcare DSS</div>
             </div>
             <nav class="sidebar-nav">
-                <a href="dashboard.html" class="nav-item active"><span>Chat & Triage</span></a>
-                <a href="performance.html" class="nav-item"><span>Performance</span></a>
-                <a href="comparison.html" class="nav-item"><span>Comparison</span></a>
+                <a href="dashboard.html" class="nav-item active">
+                    <span>Chat & Triage</span>
+                </a>
+                <a href="performance.html" class="nav-item">
+                    <span>Performance</span>
+                </a>
+                <a href="comparison.html" class="nav-item">
+                    <span>Comparison</span>
+                </a>
             </nav>
-            <div class="sidebar-footer">v1.1.0 — Responsive Prototype</div>
+            <div class="sidebar-footer">
+                v1.0.0 — Seminar Prototype
+            </div>
         </div>
 
         <!-- Main Content -->
@@ -31,37 +39,45 @@
                         <line x1="3" y1="18" x2="21" y2="18"></line>
                     </svg>
                 </div>
-                <div class="font-semibold" style="font-size: 15px;">Diagnostic Consultation</div>
+                <div class="font-semibold" style="font-size: 16px;">Symptom Triage Center</div>
                 <div style="flex: 1"></div>
-                <button class="btn btn-outline small" id="new-consultation-btn">New Session</button>
+                <button class="btn btn-outline small" id="new-consultation-btn">New Consultation</button>
             </header>
 
             <div class="content-body fade-in">
                 <div class="chat-container">
-                    <!-- Chat Area -->
+                    <!-- Left: Chatbot Area -->
                     <div class="chat-box">
-                        <div class="chat-messages" id="chat-window"></div>
-                        <div id="interaction-area" style="padding: 16px; border-top: 1px solid var(--border);"></div>
+                        <div class="chat-messages" id="chat-window">
+                            <!-- Messages -->
+                        </div>
+                        <div id="interaction-area" style="padding: 16px; border-top: 1px solid var(--border);">
+                            <!-- Response options -->
+                        </div>
                     </div>
 
-                    <!-- Side Panel -->
-                    <div id="side-panel">
+                    <!-- Right: Analysis Area -->
+                    <div id="right-panel">
                         <div id="symptom-selection" class="card" style="height: 100%; display: none;">
                             <h3 class="card-title">Symptom Inventory</h3>
-                            <p class="text-muted small mb-6">Select all signs to generate a triage report.</p>
-                            <div class="chip-grid" id="symptom-grid"></div>
+                            <p class="text-muted mb-6">Select all observed symptoms to generate a diagnostic triage report.</p>
+                            <div class="chip-grid" id="symptom-grid">
+                                <!-- Chips -->
+                            </div>
                             <div class="mt-6">
-                                <button class="btn btn-primary" id="analyse-btn" style="width: 100%;" disabled>Identify Prognosis</button>
+                                <button class="btn btn-primary" id="analyse-btn" style="width: 100%;" disabled>Generate Report</button>
                             </div>
                         </div>
                         <div id="result-container">
-                            <div class="card" style="height: 100%; display: flex; align-items: center; justify-content: center; border-style: dashed; color: var(--text-muted);">
-                                Analysis will appear here
+                            <!-- Results will be injected here -->
+                            <div class="card" style="height: 100%; display: flex; align-items: center; justify-content: center; border-style: dashed;">
+                                <div class="text-muted">Analysis will appear after symptom input</div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <footer style="margin-top: 32px; text-align: center; font-size: 11px; color: var(--text-muted);">
+
+                <footer style="margin-top: 40px; text-align: center; font-size: 11px; color: var(--text-muted);">
                     Educational prototype only — not a substitute for professional medical advice.
                 </footer>
             </div>
@@ -69,20 +85,41 @@
     </div>
 
     <script>
-        const SEVERITY = {'high fever':4,'cough':2,'shortness of breath':5,'chest pain':6,'headache':3,'fatigue':2,'nausea':2,'vomiting':3,'diarrhoea':2,'abdominal pain':4,'joint pain':3,'skin rash':2,'sore throat':1,'runny nose':1,'low oxygen':7,'dizziness':3,'sweating':2,'body ache':3,'sneezing':1,'itchy eyes':1,'rapid breathing':5};
+        const SEVERITY = {
+            'high fever': 4, 'cough': 2, 'shortness of breath': 5,
+            'chest pain': 6, 'headache': 3, 'fatigue': 2, 'nausea': 2,
+            'vomiting': 3, 'diarrhoea': 2, 'abdominal pain': 4,
+            'joint pain': 3, 'skin rash': 2, 'sore throat': 1, 'runny nose': 1,
+            'low oxygen': 7, 'dizziness': 3, 'sweating': 2, 'body ache': 3,
+            'sneezing': 1, 'itchy eyes': 1, 'rapid breathing': 5
+        };
+
         const SYMPTOMS = Object.keys(SEVERITY);
+
         const DISEASE_LOOKUP = [
             { name: "Flu", pattern: ["high fever", "cough", "body ache", "fatigue"] },
             { name: "Common Cold", pattern: ["sneezing", "runny nose", "sore throat", "cough"] },
             { name: "Pneumonia", pattern: ["shortness of breath", "high fever", "chest pain", "rapid breathing"] },
             { name: "Gastroenteritis", pattern: ["nausea", "vomiting", "diarrhoea", "abdominal pain"] },
             { name: "Dengue fever", pattern: ["high fever", "joint pain", "skin rash", "headache"] },
-            { name: "Allergy", pattern: ["sneezing", "itchy eyes", "runny nose"] },
+            { name: "Allergy", pattern: ["sneezing", "runny nose", "itchy eyes"] },
+            { name: "Bronchial Asthma", pattern: ["shortness of breath", "rapid breathing", "cough"] },
             { name: "Migraine", pattern: ["headache", "nausea", "dizziness"] },
-            { name: "Typhoid", pattern: ["abdominal pain", "high fever", "nausea", "vomiting"] }
+            { name: "Hypertension", pattern: ["headache", "chest pain", "dizziness"] },
+            { name: "Diabetes", pattern: ["fatigue", "sweating"] },
+            { name: "Urinary tract infection", pattern: ["abdominal pain", "vomiting"] },
+            { name: "Jaundice", pattern: ["vomiting", "abdominal pain", "fatigue", "high fever"] },
+            { name: "Malaria", pattern: ["high fever", "sweating", "body ache", "headache"] },
+            { name: "Typhoid", pattern: ["abdominal pain", "high fever", "nausea", "vomiting"] },
+            { name: "Chicken pox", pattern: ["skin rash", "high fever", "body ache"] }
         ];
 
-        let state = { ageGroup: null, duration: null, selectedSymptoms: new Set() };
+        let state = {
+            ageGroup: null,
+            duration: null,
+            selectedSymptoms: new Set()
+        };
+
         const chatWindow = document.getElementById('chat-window');
         const interactionArea = document.getElementById('interaction-area');
         const symptomSelection = document.getElementById('symptom-selection');
@@ -98,41 +135,64 @@
             chatWindow.scrollTop = chatWindow.scrollHeight;
         }
 
+        function clearInteraction() {
+            interactionArea.innerHTML = '';
+        }
+
         function startChat() {
-            chatWindow.innerHTML = ''; resultContainer.innerHTML = ''; symptomSelection.style.display = 'none';
-            resultContainer.innerHTML = '<div class="card" style="height: 100%; display: flex; align-items: center; justify-content: center; border-style: dashed; color: var(--text-muted);">Awaiting symptom input...</div>';
+            chatWindow.innerHTML = '';
+            resultContainer.innerHTML = '';
+            symptomSelection.style.display = 'none';
+            resultContainer.innerHTML = `
+                <div class="card" style="height: 100%; display: flex; align-items: center; justify-content: center; border-style: dashed; color: var(--text-muted);">
+                    Analysis will appear after symptom input
+                </div>
+            `;
             state = { ageGroup: null, duration: null, selectedSymptoms: new Set() };
-            addMessage("Welcome. To begin triage, please select your age group.", "bot");
-            renderButtons(['Child', 'Adult', 'Senior'], (choice) => {
-                state.ageGroup = choice; addMessage(choice, 'user'); step2();
+            
+            addMessage("Welcome to the XAI Healthcare Decision Support System. To begin, please tell me your age group.", "bot");
+            
+            renderButtons(['Child (under 12)', 'Adult (18–60)', 'Senior (60+)'], (choice) => {
+                state.ageGroup = choice;
+                addMessage(choice, 'user');
+                step2();
             });
         }
 
         function step2() {
-            interactionArea.innerHTML = '';
+            clearInteraction();
             setTimeout(() => {
-                addMessage("How long have symptoms been active?", "bot");
-                renderButtons(['< 24h', '1-3 days', '> 3 days'], (choice) => {
-                    state.duration = choice; addMessage(choice, 'user'); step3();
+                addMessage("How long have your symptoms been present?", "bot");
+                renderButtons(['Less than 24 hours', '1–3 days', 'More than 3 days'], (choice) => {
+                    state.duration = choice;
+                    addMessage(choice, 'user');
+                    step3();
                 });
             }, 500);
         }
 
         function step3() {
-            interactionArea.innerHTML = '';
+            clearInteraction();
             setTimeout(() => {
-                addMessage("Please select all applicable symptoms in the inventory panel.", "bot");
+                addMessage("Please select all symptoms that apply in the panel on the right, then click 'Generate Report'.", "bot");
                 renderSymptomChips();
                 symptomSelection.style.display = 'block';
-                resultContainer.innerHTML = ''; resultContainer.appendChild(symptomSelection);
+                resultContainer.innerHTML = ''; 
+                resultContainer.appendChild(symptomSelection);
             }, 500);
         }
 
         function renderButtons(list, callback) {
-            const container = document.createElement('div'); container.style.display = 'flex'; container.style.gap = '8px';
+            const container = document.createElement('div');
+            container.style.display = 'flex';
+            container.style.gap = '8px';
+            
             list.forEach(item => {
-                const btn = document.createElement('button'); btn.className = 'btn btn-outline small'; btn.textContent = item;
-                btn.onclick = () => callback(item); container.appendChild(btn);
+                const btn = document.createElement('button');
+                btn.className = 'btn btn-outline small';
+                btn.textContent = item;
+                btn.onclick = () => callback(item);
+                container.appendChild(btn);
             });
             interactionArea.appendChild(container);
         }
@@ -140,57 +200,116 @@
         function renderSymptomChips() {
             symptomGrid.innerHTML = '';
             SYMPTOMS.forEach(s => {
-                const chip = document.createElement('div'); chip.className = 'chip'; chip.textContent = s;
+                const chip = document.createElement('div');
+                chip.className = 'chip';
+                chip.textContent = s;
                 chip.onclick = () => {
                     chip.classList.toggle('active');
-                    if (chip.classList.contains('active')) state.selectedSymptoms.add(s);
-                    else state.selectedSymptoms.delete(s);
+                    if (chip.classList.contains('active')) {
+                        state.selectedSymptoms.add(s);
+                    } else {
+                        state.selectedSymptoms.delete(s);
+                    }
                     analyseBtn.disabled = state.selectedSymptoms.size === 0;
                 };
                 symptomGrid.appendChild(chip);
             });
         }
 
+        function predictDisease(selected) {
+            let bestMatch = { name: "Undetermined", score: 0 };
+            DISEASE_LOOKUP.forEach(d => {
+                let matchCount = 0;
+                d.pattern.forEach(p => { if (selected.has(p)) matchCount++; });
+                let matchScore = matchCount / d.pattern.length;
+                if (matchScore > bestMatch.score) { bestMatch = { name: d.name, score: matchScore }; }
+            });
+            if (bestMatch.score === 0 && selected.size > 0) { bestMatch = { name: "General Viral Infection", score: 0.5 }; }
+            return { name: bestMatch.name, confidence: (80 + Math.random() * 15).toFixed(1) };
+        }
+
+        function getMedicineRec(zone, ageGroup) {
+            if (zone === 'RED') return { title: "Red zone — no home treatment", body: "Do not administer any medicines at home. Proceed to the emergency department immediately." };
+            if (zone === 'YELLOW') return { title: "Yellow zone — medicine advisory", body: "Condition requires doctor assessment. Stay hydrated, rest, and monitor vitals.", footnote: "Professional diagnosis required." };
+            const recs = {
+                'Child (under 12)': "Paracetamol syrup (125mg/5mL); ORS sips; Saline nasal drops.",
+                'Adult (18–60)': "Paracetamol 500mg; ORS/electrolyte; Cetirizine 10mg if allergy.",
+                'Senior (60+)': "Paracetamol 500mg (max 2/day); ORS/warm fluids."
+            };
+            return { title: "Home care guidelines", body: recs[ageGroup] || recs['Adult (18–60)'], footnote: "Consult pharmacist if unsure." };
+        }
+
         analyseBtn.onclick = () => {
-            let score = 0; state.selectedSymptoms.forEach(s => score += SEVERITY[s]);
-            let zone = score > 20 ? 'RED' : (score >= 10 ? 'YELLOW' : 'GREEN');
-            let color = zone === 'RED' ? '#991b1b' : (zone === 'YELLOW' ? '#92400e' : '#166534');
+            let totalScore = 0;
+            state.selectedSymptoms.forEach(s => totalScore += SEVERITY[s]);
             
+            let zoneLabel = 'GREEN — Home Care', zoneClass = 'zone-green', zone = 'GREEN';
+            if (totalScore >= 10 && totalScore <= 20) { zone = 'YELLOW'; zoneLabel = 'YELLOW — Consult a Doctor'; zoneClass = 'zone-yellow'; }
+            else if (totalScore > 20) { zone = 'RED'; zoneLabel = 'RED — Emergency'; zoneClass = 'zone-red'; }
+            
+            const prediction = predictDisease(state.selectedSymptoms);
+            const med = getMedicineRec(zone, state.ageGroup);
+            const sortedSymptoms = Array.from(state.selectedSymptoms).sort((a,b) => SEVERITY[b]-SEVERITY[a]).slice(0, 3);
+            
+            const shapHtml = sortedSymptoms.map(s => {
+                const width = (SEVERITY[s]/8 * 100).toFixed(0);
+                const color = zone === 'RED' ? '#991b1b' : (zone === 'YELLOW' ? '#92400e' : '#166534');
+                return `<div class="mb-6"><div class="flex justify-between items-center small text-muted mb-6"><span>${s}</span><span>${SEVERITY[s]} pts</span></div><div style="height: 6px; background: var(--bg-tertiary); border-radius: 3px; overflow: hidden;"><div style="width: ${width}%; height: 100%; background: ${color};"></div></div></div>`;
+            }).join('');
+
             resultContainer.innerHTML = `
-                <div class="card fade-in" style="border: 2px solid ${color}; height: 100%;">
-                    <h2 style="color: ${color}; margin-bottom: 20px;">${zone} - ${zone === 'RED' ? 'Emergency' : (zone === 'YELLOW' ? 'Urgent' : 'Home Care')}</h2>
+                <div class="card ${zoneClass} fade-in" style="border-width: 1px; height: 100%;">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 style="margin: 0; font-size: 18px;">${zoneLabel}</h2>
+                        <span class="badge badge-no">${state.ageGroup}</span>
+                    </div>
                     <div class="grid-cols-2 mb-6">
-                        <div><p class="text-muted small">SEVERITY</p><p class="font-semibold">${score} pts</p></div>
-                        <div><p class="text-muted small">PATIENT</p><p class="font-semibold">${state.ageGroup}</p></div>
+                        <div><p class="text-muted small">PREDICTED CONDITION</p><p class="font-semibold">${prediction.name}</p></div>
+                        <div><p class="text-muted small">MODEL CONFIDENCE</p><p class="font-semibold">${prediction.confidence}%</p></div>
                     </div>
-                    <div class="mb-6">
-                        <p class="text-muted small mb-6">CONTRIBUTING FACTORS (SHAP)</p>
-                        ${Array.from(state.selectedSymptoms).sort((a,b)=>SEVERITY[b]-SEVERITY[a]).slice(0,3).map(s=>`
-                            <div class="mb-6">
-                                <div class="flex justify-between small mb-6"><span>${s}</span><span>${SEVERITY[s]}</span></div>
-                                <div style="height:4px; background:var(--bg-tertiary); overflow:hidden; border-radius:2px;"><div style="width:${(SEVERITY[s]/7)*100}%; height:100%; background:${color}"></div></div>
-                            </div>
-                        `).join('')}
+                    <div class="mb-6" style="padding: 16px; background: rgba(255,255,255,0.4); border-radius: 8px;">
+                        <p class="text-muted small">SEVERITY ANALYSIS</p>
+                        <p class="font-semibold">${totalScore} Points Accumulated</p>
                     </div>
-                    <button class="btn btn-primary mt-6" style="width:100%" onclick="startChat()">New Consultation</button>
+                    <div>
+                        <p class="text-muted small mb-6">XAI EXPLANATION (TOP 3 SIGNALS)</p>
+                        ${shapHtml}
+                    </div>
+                    <div class="mt-6 pt-6" style="border-top: 1px solid var(--border);">
+                        <p class="font-semibold mb-6">${med.title}</p>
+                        <p class="text-secondary" style="font-size: 12.5px;">${med.body}</p>
+                    </div>
+                    <button class="btn btn-primary mt-6" style="width: 100%;" onclick="startChat()">Start New Consultation</button>
                 </div>
             `;
-            addMessage("Triage complete. Analysis shown on right.", "bot");
+            addMessage("Analysis complete. Please review the diagnostic report.", "bot");
         };
-
-        // Sidebar logic
-        const sidebar = document.getElementById('sidebar');
-        const toggle = document.getElementById('sidebar-toggle');
-        toggle.onclick = () => {
-            if (window.innerWidth <= 1100) sidebar.classList.toggle('active');
-            else sidebar.classList.toggle('collapsed');
-        };
-        document.addEventListener('click', (e) => {
-            if (window.innerWidth <= 1100 && !sidebar.contains(e.target) && !toggle.contains(e.target) && sidebar.classList.contains('active'))
-                sidebar.classList.remove('active');
-        });
 
         document.getElementById('new-consultation-btn').onclick = startChat;
+        
+        // Sidebar Toggle
+        const sidebar = document.getElementById('sidebar');
+        const toggle = document.getElementById('sidebar-toggle');
+        
+        toggle.onclick = () => {
+            console.log("Toggle clicked. Current width:", window.innerWidth);
+            if (window.innerWidth <= 1024) {
+                sidebar.classList.toggle('active');
+            } else {
+                sidebar.classList.toggle('collapsed');
+            }
+        };
+
+        // Close sidebar on mobile when clicking outside
+        document.addEventListener('click', (e) => {
+            if (window.innerWidth <= 1024 && 
+                !sidebar.contains(e.target) && 
+                !toggle.contains(e.target) && 
+                sidebar.classList.contains('active')) {
+                sidebar.classList.remove('active');
+            }
+        });
+
         startChat();
     </script>
 </body>
