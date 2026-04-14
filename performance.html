@@ -10,7 +10,7 @@
 <body>
     <div class="app-wrapper">
         <!-- Sidebar -->
-        <div class="sidebar">
+        <div class="sidebar" id="sidebar">
             <div class="sidebar-header">
                 <div class="sidebar-logo">XAI Healthcare DSS</div>
             </div>
@@ -33,7 +33,15 @@
         <!-- Main Content -->
         <div class="main-content">
             <header class="top-bar">
+                <div class="menu-toggle" id="sidebar-toggle">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                </div>
                 <div class="font-semibold" style="font-size: 16px;">System Performance Analytics</div>
+                <div style="flex: 1"></div>
                 <div class="text-muted small">Validated XGBoost v2.0</div>
             </header>
 
@@ -161,6 +169,28 @@
                 datasets: [{ data: [0.68, 0.61, 0.55, 0.44, 0.38, 0.31, 0.27, 0.21], backgroundColor: '#166534', borderRadius: 4 }]
             },
             options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, scales: { x: { grid: { color: gridColor } } } }
+        });
+
+        // Sidebar Toggle
+        const sidebar = document.getElementById('sidebar');
+        const toggle = document.getElementById('sidebar-toggle');
+        
+        toggle.onclick = () => {
+            if (window.innerWidth <= 1024) {
+                sidebar.classList.toggle('active');
+            } else {
+                sidebar.classList.toggle('collapsed');
+            }
+        };
+
+        // Close sidebar on mobile when clicking outside
+        document.addEventListener('click', (e) => {
+            if (window.innerWidth <= 1024 && 
+                !sidebar.contains(e.target) && 
+                !toggle.contains(e.target) && 
+                sidebar.classList.contains('active')) {
+                sidebar.classList.remove('active');
+            }
         });
     </script>
 </body>
