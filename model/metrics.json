@@ -1,0 +1,100 @@
+{
+    "accuracy": 1.0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0,
+    "confusion_matrix_top6": {
+        "classes": [
+            "Fungal infection",
+            "Allergy",
+            "GERD",
+            "Chronic cholestasis",
+            "Drug Reaction",
+            "Peptic ulcer diseae"
+        ],
+        "matrix": [
+            [
+                24,
+                0,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                0,
+                24,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                0,
+                0,
+                24,
+                0,
+                0,
+                0
+            ],
+            [
+                0,
+                0,
+                0,
+                24,
+                0,
+                0
+            ],
+            [
+                0,
+                0,
+                0,
+                0,
+                24,
+                0
+            ],
+            [
+                0,
+                0,
+                0,
+                0,
+                0,
+                24
+            ]
+        ]
+    },
+    "shap_top8": [
+        {
+            "feature": "family_history",
+            "importance": 0.0892513245344162
+        },
+        {
+            "feature": "coma",
+            "importance": 0.08092546463012695
+        },
+        {
+            "feature": "pain_behind_the_eyes",
+            "importance": 0.07842204719781876
+        },
+        {
+            "feature": "blood_in_sputum",
+            "importance": 0.07833286374807358
+        },
+        {
+            "feature": "throat_irritation",
+            "importance": 0.07739537209272385
+        },
+        {
+            "feature": "receiving_blood_transfusion",
+            "importance": 0.07733075320720673
+        },
+        {
+            "feature": "muscle_pain",
+            "importance": 0.07582288235425949
+        },
+        {
+            "feature": "rusty_sputum",
+            "importance": 0.07578212022781372
+        }
+    ]
+}
