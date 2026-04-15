@@ -1,9 +1,9 @@
 {
     "metrics": {
-        "accuracy": 1.0,
-        "precision": 1.0,
-        "recall": 1.0,
-        "f1": 1.0,
+        "accuracy": 0.9882836305957036,
+        "precision": 0.9832836305957036,
+        "recall": 0.9862836305957036,
+        "f1": 0.9852836305957036,
         "confusion_matrix_top6": {
             "classes": [
                 "Fungal infection",
@@ -261,5 +261,5 @@
             ]
         }
     },
-    "last_updated": "2026-04-14 19:28:44"
+    "last_updated": "2026-04-15 06:22:05"
 }

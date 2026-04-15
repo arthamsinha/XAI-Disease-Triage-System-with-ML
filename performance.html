@@ -65,10 +65,20 @@
                     </div>
                 </div>
 
+                <style>
+                    .heatmap-table { width: 100%; border-collapse: separate; border-spacing: 4px; table-layout: fixed; }
+                    .heatmap-table th, .heatmap-table td { padding: 8px; text-align: center; border-radius: 4px; font-size: 11px; }
+                    .heatmap-table th { font-weight: 500; color: var(--text-muted); background: transparent; }
+                    .heatmap-cell { color: white; transition: all 0.2s; position: relative; cursor: default; }
+                    .heatmap-cell:hover::after { content: attr(data-title); position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); background: #1e293b; color: white; padding: 4px 8px; border-radius: 4px; white-space: nowrap; z-index: 10; font-size: 10px; }
+                    .heatmap-label-y { text-align: right !important; padding-right: 12px !important; width: 120px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+                    .heatmap-label-x { height: 40px; }
+                </style>
+
                 <div class="card">
                     <h3 class="card-title">Confusion Matrix: Disease Prediction (Top 6 Classes)</h3>
-                    <div style="height: 350px;">
-                        <canvas id="confusion-matrix"></canvas>
+                    <div id="cm-heatmap-container" style="min-height: 400px; padding: 20px; overflow-x: auto;">
+                        <!-- Heatmap will be injected here -->
                     </div>
                 </div>
 
@@ -117,7 +127,7 @@
 
         async function initPerformance() {
             try {
-                const response = await fetch('model/metrics.json');
+                const response = await fetch('model/metrics.json?t=' + new Date().getTime());
                 const metrics = await response.json();
 
                 // Update Summary Stats
@@ -126,28 +136,39 @@
                 document.getElementById('stat-recall').textContent = (metrics.recall * 100).toFixed(1) + '%';
                 document.getElementById('stat-f1').textContent = (metrics.f1 * 100).toFixed(1) + '%';
 
-                // Confusion Matrix Logic
+                // Confusion Matrix Logic (Heatmap)
                 const cm = metrics.confusion_matrix_top6;
-                const cmDatasets = cm.classes.map((className, idx) => {
-                    return {
-                        label: className,
-                        data: cm.matrix.map(row => row[idx]),
-                        backgroundColor: `hsl(${idx * 45}, 70%, 60%)`
-                    };
+                const container = document.getElementById('cm-heatmap-container');
+                
+                let html = `<table class="heatmap-table">
+                    <thead>
+                        <tr class="heatmap-label-x">
+                            <th style="width: 120px; vertical-align: bottom;">Actual / Predicted</th>
+                            ${cm.classes.map(c => `<th style="vertical-align: bottom;">${c}</th>`).join('')}
+                        </tr>
+                    </thead>
+                    <tbody>`;
+                
+                cm.matrix.forEach((row, rIdx) => {
+                    html += `<tr><td class="heatmap-label-y">${cm.classes[rIdx]}</td>`;
+                    row.forEach((val, cIdx) => {
+                        const maxVal = Math.max(...cm.matrix.flat());
+                        const intensity = val > 0 ? (val / maxVal) : 0;
+                        const bgColor = val > 0 ? `rgba(37, 99, 235, ${0.1 + intensity * 0.9})` : '#f1f5f9';
+                        const textColor = val > 0 ? (intensity > 0.5 ? 'white' : 'var(--text-primary)') : '#94a3b8';
+                        
+                        html += `
+                            <td class="heatmap-cell" 
+                                style="background: ${bgColor}; color: ${textColor}; font-weight: ${val > 0 ? '600' : '400'}"
+                                data-title="Actual: ${cm.classes[rIdx]} | Predicted: ${cm.classes[cIdx]}">
+                                ${val}
+                            </td>`;
+                    });
+                    html += `</tr>`;
                 });
-
-                new Chart(document.getElementById('confusion-matrix'), {
-                    type: 'bar',
-                    data: { labels: cm.classes, datasets: cmDatasets },
-                    options: { 
-                        responsive: true, 
-                        maintainAspectRatio: false, 
-                        scales: { 
-                            y: { beginAtZero: true, grid: { color: gridColor } },
-                            x: { grid: { display: false } }
-                        }
-                    }
-                });
+                
+                html += `</tbody></table>`;
+                container.innerHTML = html;
 
                 // Triage Distribution (Mocked for visual variety, but linked to real scale)
                 new Chart(document.getElementById('triage-dist'), {
