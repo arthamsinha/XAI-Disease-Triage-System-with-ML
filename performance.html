@@ -65,10 +65,20 @@
                     </div>
                 </div>
 
+                <style>
+                    .heatmap-table { width: 100%; border-collapse: separate; border-spacing: 4px; table-layout: fixed; margin-top: 10px; }
+                    .heatmap-table th, .heatmap-table td { padding: 8px; text-align: center; border-radius: 4px; font-size: 11px; }
+                    .heatmap-table th { font-weight: 500; color: var(--text-muted); background: transparent; }
+                    .heatmap-cell { color: white; transition: all 0.2s; position: relative; cursor: default; }
+                    .heatmap-label-y { text-align: right !important; padding-right: 12px !important; width: 120px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--text-muted); }
+                    .heatmap-label-x { height: 40px; }
+                    .cell-note { font-size: 9px; opacity: 0.7; display: block; }
+                </style>
+
                 <div class="card">
                     <h3 class="card-title">Confusion Matrix: Disease Prediction (Top 6 Classes)</h3>
-                    <div style="height: 350px;">
-                        <canvas id="confusion-matrix"></canvas>
+                    <div id="cm-heatmap-container" style="min-height: 380px; padding: 10px; overflow-x: auto;">
+                        <!-- Heatmap Table -->
                     </div>
                 </div>
 
@@ -115,22 +125,47 @@
         Chart.defaults.color = 'rgba(144, 151, 170, 0.8)';
         const gridColor = 'rgba(216, 220, 228, 0.3)';
 
-        // Data & Charts logic same as before but adapted to new containers
-        new Chart(document.getElementById('confusion-matrix'), {
-            type: 'bar',
-            data: {
-                labels: ['Flu', 'Pneumonia', 'Gastro', 'Common Cold', 'Chest infect.', 'Allergy'],
-                datasets: [
-                    { label: 'Flu', data: [48, 2, 0, 1, 0, 0], backgroundColor: '#3b82f6' },
-                    { label: 'Pneumonia', data: [1, 45, 0, 0, 3, 0], backgroundColor: '#6366f1' },
-                    { label: 'Gastro', data: [0, 0, 50, 2, 0, 0], backgroundColor: '#8b5cf6' },
-                    { label: 'Common Cold', data: [1, 0, 1, 47, 0, 2], backgroundColor: '#a855f7' },
-                    { label: 'Chest infect.', data: [0, 2, 0, 0, 46, 1], backgroundColor: '#d946ef' },
-                    { label: 'Allergy', data: [0, 0, 0, 2, 1, 49], backgroundColor: '#ec4899' }
-                ]
-            },
-            options: { responsive: true, maintainAspectRatio: false, scales: { y: { grid: { color: gridColor } }, x: { grid: { display: false } } } }
-        });
+        // Hardcoded Confusion Matrix Data (Preserving your specific diseases and numbers)
+        const cmClasses = ['Flu', 'Pneumonia', 'Gastro', 'Common Cold', 'Chest infect.', 'Allergy'];
+        const cmMatrix = [
+            [48, 2, 0, 1, 0, 0],   // Actual Flu
+            [1, 45, 0, 0, 3, 0],   // Actual Pneumonia
+            [0, 0, 50, 2, 0, 0],   // Actual Gastro
+            [1, 0, 1, 47, 0, 2],   // Actual Common Cold
+            [0, 2, 0, 0, 46, 1],   // Actual Chest infect.
+            [0, 0, 0, 2, 1, 49]    // Actual Allergy
+        ];
+
+        function renderConfusionMatrix() {
+            const container = document.getElementById('cm-heatmap-container');
+            let html = `<table class="heatmap-table">
+                <thead>
+                    <tr class="heatmap-label-x">
+                        <th style="width: 120px;">Actual / Predicted</th>
+                        ${cmClasses.map(c => `<th>${c}</th>`).join('')}
+                    </tr>
+                </thead>
+                <tbody>`;
+
+            cmMatrix.forEach((row, rIdx) => {
+                html += `<tr><td class="heatmap-label-y">${cmClasses[rIdx]}</td>`;
+                row.forEach((val, cIdx) => {
+                    const intensity = val > 0 ? (val / 50) : 0;
+                    const bgColor = val > 0 ? `rgba(37, 99, 235, ${0.1 + intensity * 0.9})` : '#f1f5f9';
+                    const textColor = val > 0 ? (intensity > 0.5 ? 'white' : 'var(--text-primary)') : '#94a3b8';
+                    
+                    html += `
+                        <td class="heatmap-cell" style="background: ${bgColor}; color: ${textColor}; font-weight: ${val > 10 ? '600' : '400'}">
+                            ${val}
+                        </td>`;
+                });
+                html += `</tr>`;
+            });
+            html += `</tbody></table>`;
+            container.innerHTML = html;
+        }
+
+        renderConfusionMatrix();
 
         new Chart(document.getElementById('triage-dist'), {
             type: 'doughnut',
